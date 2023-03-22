@@ -1,9 +1,19 @@
 <?php
 class User {
     private $email;
-    private $password;
 
-    public static function register(string $email, string $password) :bool {
+
+    public function __construct($email) {
+        $this->email = $email;
+
+    }
+
+    //gettery
+    public function getName() : string {
+        return $this->email;
+    }
+
+    public static function register(string $email, string $password) : bool {
         global $db;
         $query = $db->prepare("INSERT INTO user VALUES (NULL, ?, ?)");
         $passwordHash = password_hash($password, PASSWORD_ARGON2I);
@@ -20,8 +30,11 @@ class User {
         $row = $result->fetch_assoc();
         $passwordHash = $row['password'];
         if(password_verify($password, $passwordHash)) {
+            //hasła są zgodne - możemy zalogować użytkownika
             $u = new User($email);
             $_SESSION['user'] = $u;
         }
     }
 }
+
+?>

@@ -25,11 +25,25 @@ Route::add('/upload', function() {
     // (po wypełnieniu formularza)
     global $twig;
     if(isset($_POST['submit']))  {
-        Post::upload($_FILES['uploadedFile']['tmp_name']);
+        Post::upload($_FILES['uploadedFile']['tmp_name'], $_POST['title']);
     }
     //TODO: zmienić na ścieżkę względną
     header("Location: http://localhost/cms/pub");
 }, 'post');
 
-Route::run('/cms/pub');
+Route::add('/register', function() {
+    global $twig;
+    $twigData = array("pageTitle" => "Zarejestruj użytkownika");
+    $twig->display("register.html.twig", $twigData);
+});
+
+Route::add('/register', function(){
+    global $twig;
+    if(isset($_POST['submit'])) {
+        User::register($_POST['email'], $_POST['password']);
+        header("Location: http://localhost/cms1/pub");
+    }
+}, 'post');
+
+Route::run('/cms1/pub');
 ?>
