@@ -28,7 +28,7 @@ Route::add('/upload', function() {
         Post::upload($_FILES['uploadedFile']['tmp_name'], $_POST['title']);
     }
     //TODO: zmienić na ścieżkę względną
-    header("Location: http://localhost/cms/pub");
+    header("Location: http://localhost/cms1/pub");
 }, 'post');
 
 Route::add('/register', function() {
