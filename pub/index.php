@@ -1,42 +1,30 @@
 <?php
 require_once('./../src/config.php');
-//musi być wywołane zanim jakikolwiek content trafi do przeglądarki użytkownika
 session_start();
 
 use Steampixel\Route;
-
 Route::add('/', function() {
     //strona wyświetlająca obrazki
     global $twig;
     //pobierz 10 najnowszych postów
     $postArray = Post::getPage();
     $twigData = array("postArray" => $postArray,
-                        "pageTitle" => "Strona główna",
-                        );
-    //jeśli użytkownik jest zalogowany to przekaż go do twiga
-    if(isset($_SESSION['user']))
-        $twigData['user'] = $_SESSION['user'];
-    $twig->display("index.html.twig", $twigData);
-});
+                        "pageTitle" => "Strona główna");
+                        if(isset($_SESSION['user']))
+                        $twigData['user'] = $_SESSION['user'];
+                    $twig->display("index.html.twig", $twigData);
+                });
 
 Route::add('/upload', function() {
     //strona z formularzem do wgrywania obrazków
     global $twig;
     $twigData = array("pageTitle" => "Wgraj mema");
     //jeśli użytkownik jest zalogowany to przekaż go do twiga
-    if(User::isAuth())
-    {
+    if(isset($_SESSION['user']))
         $twigData['user'] = $_SESSION['user'];
-        $twig->display("upload.html.twig", $twigData);
-    } else {
-        http_response_code(403);
-    }
-        
+    $twig->display("upload.html.twig", $twigData);
 });
-
 Route::add('/upload', function() {
-    //wywoła się tylko po otrzymaniu danych metodą post na ten url
-    // (po wypełnieniu formularza)
     global $twig;
     if(isset($_POST['submit']))  {
         Post::upload($_FILES['uploadedFile']['tmp_name'], $_POST['title'], $_POST['userId']);
@@ -44,7 +32,6 @@ Route::add('/upload', function() {
     //TODO: zmienić na ścieżkę względną
     header("Location: http://localhost/cms2/pub");
 }, 'post');
-
 Route::add('/register', function() {
     global $twig;
     $twigData = array("pageTitle" => "Zarejestruj użytkownika");
@@ -55,7 +42,7 @@ Route::add('/register', function(){
     global $twig;
     if(isset($_POST['submit'])) {
         User::register($_POST['email'], $_POST['password']);
-        header("Location: http://localhost/cms2/pub");
+        header("Location: http://localhost/csm2/pub");
     }
 }, 'post');
 
@@ -68,19 +55,10 @@ Route::add('/login', function(){
 Route::add('/login', function() {
     global $twig;
     if(isset($_POST['submit'])) {
-        if(User::login($_POST['email'], $_POST['password'])) {
-            //zalogowano poprawnie
-            header("Location: http://localhost/cms2/pub");
-        } else {
-            //błąd logowania
-            $twigData = array('pageTitle' => "Zaloguj użytkownika",
-                                "message" => "Niepoprawny login lub hasło!");
-            $twig->display("login.html.twig", $twigData);
-        }
+        User::login($_POST['email'], $_POST['password']);
     }
-    
+    header("Location: http://localhost/cms2/pub");
 
 }, 'post');
-
 Route::run('/cms2/pub');
 ?>
