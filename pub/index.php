@@ -24,9 +24,14 @@ Route::add('/upload', function() {
     global $twig;
     $twigData = array("pageTitle" => "Wgraj mema");
     //jeśli użytkownik jest zalogowany to przekaż go do twiga
-    if(isset($_SESSION['user']))
+    if(User::isAuth())
+    {
         $twigData['user'] = $_SESSION['user'];
-    $twig->display("upload.html.twig", $twigData);
+        $twig->display("upload.html.twig", $twigData);
+    } else {
+        http_response_code(403);
+    }
+        
 });
 
 Route::add('/upload', function() {
@@ -37,7 +42,7 @@ Route::add('/upload', function() {
         Post::upload($_FILES['uploadedFile']['tmp_name'], $_POST['title'], $_POST['userId']);
     }
     //TODO: zmienić na ścieżkę względną
-    header("Location: http://localhost/cms2/pub");
+    header("Location: http://localhost/cms/pub");
 }, 'post');
 
 Route::add('/register', function() {
@@ -50,7 +55,7 @@ Route::add('/register', function(){
     global $twig;
     if(isset($_POST['submit'])) {
         User::register($_POST['email'], $_POST['password']);
-        header("Location: http://localhost/cms2/pub");
+        header("Location: http://localhost/cms/pub");
     }
 }, 'post');
 
@@ -63,11 +68,19 @@ Route::add('/login', function(){
 Route::add('/login', function() {
     global $twig;
     if(isset($_POST['submit'])) {
-        User::login($_POST['email'], $_POST['password']);
+        if(User::login($_POST['email'], $_POST['password'])) {
+            //zalogowano poprawnie
+            header("Location: http://localhost/cms/pub");
+        } else {
+            //błąd logowania
+            $twigData = array('pageTitle' => "Zaloguj użytkownika",
+                                "message" => "Niepoprawny login lub hasło!");
+            $twig->display("login.html.twig", $twigData);
+        }
     }
-    header("Location: http://localhost/cms2/pub");
+    
 
 }, 'post');
 
-Route::run('/cms2/pub');
+Route::run('/cms/pub');
 ?>
