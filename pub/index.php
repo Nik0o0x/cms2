@@ -37,7 +37,7 @@ Route::add('/upload', function() {
         Post::upload($_FILES['uploadedFile']['tmp_name'], $_POST['title'], $_POST['userId']);
     }
     //TODO: zmienić na ścieżkę względną
-    header("Location: http://localhost/cms/pub");
+    header("Location: http://localhost/cms2/pub");
 }, 'post');
 
 Route::add('/register', function() {
@@ -50,7 +50,7 @@ Route::add('/register', function(){
     global $twig;
     if(isset($_POST['submit'])) {
         User::register($_POST['email'], $_POST['password']);
-        header("Location: http://localhost/cms/pub");
+        header("Location: http://localhost/cms2/pub");
     }
 }, 'post');
 
@@ -65,9 +65,9 @@ Route::add('/login', function() {
     if(isset($_POST['submit'])) {
         User::login($_POST['email'], $_POST['password']);
     }
-    header("Location: http://localhost/cms/pub");
+    header("Location: http://localhost/cms2/pub");
 
 }, 'post');
 
-Route::run('/cms/pub');
+Route::run('/cms2/pub');
 ?>

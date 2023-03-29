@@ -42,7 +42,7 @@ if(isset($_POST['submit']))
     $targetUrl = $targetDir . $filename . ".webp";
     imagewebp($gdImage, $targetUrl);
  
-    $db = new mysqli("localhost", "root", "", "cms");
+    $db = new mysqli("localhost", "root", "", "cms2");
     $q = "INSERT post (ID, timestamp, filename) VALUES (NULL, ?, ?)";
     $preparedQ = $db->prepare($q);
     $date = date('Y-m-d H:i:s');
