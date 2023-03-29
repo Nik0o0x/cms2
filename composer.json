@@ -1,16 +1,16 @@
 {
-    "name": "machinacyfrowa/cms",
+    "name": "Nik0o0x/cms2",
     "description": "Prosty system CMS do strony z memami",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Machinacyfrowa\\Cms\\": "src/"
+            "Nik0o0x\\cms2\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "Paweł Zawadzki",
-            "email": "admin@machinacyfrowa.pl"
+            "name": "Nikodem Redmann",
+            "email": "nikodem.redmann@wp.pl"
         }
     ],
     "require": {
