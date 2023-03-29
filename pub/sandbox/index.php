@@ -16,7 +16,7 @@
     </form>
 
     <?php
-   $db = new mysqli("localhost","root","","post");
+   $db = new mysqli("localhost","root","","meme");
     //sprawdź czy został wysłany formularz
     if(isset($_POST['submit'])) 
     {
