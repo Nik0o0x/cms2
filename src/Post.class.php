@@ -1,36 +1,40 @@
 <?php
 class Post {
-    private int $ID;
-    private string $FileName;
-    private string $TimeStamp;
-    private string $Tytuł;
-    private int $userId;
+    private int $id;
+    private string $filename;
+    private string $timestamp;
+    private string $title;
+    //id użytkownika który wgrał mema
+    private int $authorId;
+    //nazwa użytkownika autora mema
     private string $authorName;
-    
-    function __construct(int $i, string $f, string $t, string $Y, int $userId)
-    {
-        $this->ID = $i;
-        $this->FileName = $f;
-        $this->TimeStamp = $t;
-        $this->Tytuł =$Y;
-        $this->userId = $userId;
+
+    function __construct(int $i, string $f, string $t, string $title, int $authorId ) {
+        $this->id = $i;
+        $this->filename = $f;
+        $this->timestamp = $t;
+        $this->title = $title;
+        $this->authorId = $authorId;
+        //pobierz z bazy danych imię / login autora posta
         global $db;
-        $this->authorName = User::getNameById($this->userId);
+        $this->authorName = User::getNameById($this->authorId);
     }
 
+    public function getId() : int {
+        return $this->id;
+    }
     public function getFilename() : string {
-        return $this->FileName;
+        return $this->filename;
     }
     public function getTimestamp() : string {
-        return $this->TimeStamp;
+        return $this->timestamp;
     }
-    public function getTytuł() : string{
-        return $this->Tytuł;
+    public function getTitle() : string {
+        return $this->title;
     }
     public function getAuthorName() : string {
         return $this->authorName;
     }
-
 
     //funkcja zwraca ostatnio dodany obrazek
     static function getLast() : Post {
@@ -45,16 +49,17 @@ class Post {
         //przetwarzanie na tablicę asocjacyjną - bez pętli bo będzie tylko jeden
         $row = $result->fetch_assoc();
         //tworzenie obiektu
-        $p = new Post($row['id'], $row['filename'], $row['timestamp'], $row['tytuł'], $row['userId']);
+        $p = new Post($row['id'], $row['filename'], $row['timestamp'], $row['title'], $row['userId']);
         //zwracanie obiektu
         return $p; 
     }
+
     //funkcja zwraca jedna stronę obrazków
     static function getPage(int $pageNumber = 1, int $postsPerPage = 10) : array {
         //połączenie z bazą
         global $db;
         //kwerenda
-        $query = $db->prepare("SELECT * FROM post ORDER BY timestamp DESC LIMIT ? OFFSET ?");
+        $query = $db->prepare("SELECT * FROM post WHERE removed = 0 ORDER BY timestamp DESC LIMIT ? OFFSET ?");
         //oblicz przesunięcie - numer strony * ilość zdjęć na stronie
         $offset = ($pageNumber-1)*$postsPerPage;
         //podstaw do kwerendy
@@ -67,12 +72,13 @@ class Post {
         $postsArray = array();
         //pobieraj wiersz po wierszu jako tablicę asocjacyjną indeksowaną nazwami kolumn z mysql
         while($row = $result->fetch_assoc()) {
-            $post = new Post($row['ID'],$row['FileName'],$row['TimeStamp'],$row['Tytuł'], $row['userId']);
+            $post = new Post($row['id'],$row['filename'],$row['timestamp'], $row['title'], $row['authorId']);
             array_push($postsArray, $post);
         }
         return $postsArray;
     }
-    static function upload(string $tempFileName, string $Tytuł, int $userId) {
+
+    static function upload(string $tempFileName, string $title, int $userId) {
         //deklarujemy folder do którego będą zaczytywane obrazy
         $targetDir = "img/";
         //sprawdź czy mamy do czynienia z obrazem
@@ -99,16 +105,25 @@ class Post {
         $gdImage = @imagecreatefromstring($imageString);
         //zapisujemy w formacie webp
         imagewebp($gdImage, $newFileName);
+
         //użyj globalnego połączenia
         global $db;
         //stwórz kwerendę
-        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?, ?,?)");
+        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?, ?, ?, 0)");
         //przygotuj znacznik czasu dla bazy danych
         $dbTimestamp = date("Y-m-d H:i:s");
         //zapisz dane do bazy
-        $query->bind_param("sssi", $dbTimestamp, $newFileName, $Tytuł, $userId);
+        $query->bind_param("sssi", $dbTimestamp, $newFileName, $title, $userId);
         if(!$query->execute())
             die("Błąd zapisu do bazy danych");
+
+    }
+    public static function remove($id) : bool {
+        global $db;
+        $query = $db->prepare("UPDATE post SET removed = 1 WHERE id = ?");
+        $query->bind_param("i", $id);
+        return $query->execute();
     }
 }
+
 ?>

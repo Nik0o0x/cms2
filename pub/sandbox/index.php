@@ -12,11 +12,10 @@
             Wybierz plik do wgrania na serwer:
         </label><br>
         <input type="file" name="uploadedFile" id="uploadedFileInput" required><br>
-        <input type="submit" value="Wyślij plik" name="submit"><br>  
+        <input type="submit" value="Wyślij plik" name="submit"><br>
     </form>
 
     <?php
-   $db = new mysqli("localhost","root","","meme");
     //sprawdź czy został wysłany formularz
     if(isset($_POST['submit'])) 
     {
@@ -42,7 +41,7 @@
         /// niepotrzebne - generujemy webp
 
         //wygeneruj hash - nową nazwę pliku
-        $hash = hash("sha256", $sourceFileName . hrtime(true));
+        $hash = hash("sha256", $sourceFileName . hrtime(true) );
         $newFileName = $hash . ".webp";
 
         //zaczytujemy cały obraz z folderu tymczasowego do stringa
@@ -69,15 +68,15 @@
         //nieaktualne - generujemy webp
         imagewebp($gdImage, $targetURL);
 
+        $db = new mysqli('localhost', 'root', '', 'cms2');
+        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?)");
+        $dbTimestamp = date("Y-m-d H:i:s");
+        $query->bind_param("ss", $dbTimestamp, $hash);
+        if(!$query->execute())
+            die("Błąd zapisu do bazy danych");
 
         echo "Plik został poprawnie wgrany na serwer";
-        $dateTime = date("Y-m-d H:i:s" );
-        $sql = "INSERT INTO post (timestamp, filename) VALUE ('$dateTime', '$hash')";
-        echo "Plik został pomyślnie wgrany na serwer";
-        $db->query($sql);
-        $db->close();
     }
-
     ?>
 </body>
 </html>

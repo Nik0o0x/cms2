@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,12 +7,18 @@
     <title>Document</title>
 </head>
 <body>
+    <style>
+        img {
+            display: block;
+            margin: 10px auto;
+        }
+        </style>
 <?php
-$db = new mysqli('localhost', 'root', '', 'post');
+$db = new mysqli('localhost', 'root', '', 'cms2');
 $q = "SELECT * FROM post ORDER BY timestamp DESC";
 $result = $db->query($q);
-while($row = $result->fetch_assoc()){
-    $hash = $row['FileName'];
+while($row = $result->fetch_assoc()) {
+    $hash = $row['filename'];
     $url = "img/" . $hash . ".webp";
     echo "<img src=\"$url\">";
 }
