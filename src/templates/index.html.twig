@@ -9,6 +9,22 @@
     <div id="post">
         <h2>{{ post.getTitle() }} </h2>
         <img src="{{ post.getFilename() }}">
+        {% if post.getVote() == -1 %}
+        <button disabled>-</button>
+        {% else %}
+        <a href="downvote/{{post.getId()}}">
+        <button>-</button>
+        </a>
+        {% endif %}
+        
+        {{ post.getScore() }}
+        {% if post.getVote() == 1 %}
+        <button disabled>+</button>
+        {% else %}
+        <a href="upvote/{{post.getId()}}">
+        <button>+</button>
+        </a>
+        {% endif %}
         <h6>Autor: {{post.getAuthorName() }}</h6>
         <h6>Data dodania: {{ post.getTimestamp() }} </h6>
     </div>

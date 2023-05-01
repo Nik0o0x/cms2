@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\pub",
+    "\\src",
+    "\\src\\templates"
   ],
+  "SelectedNode": "\\src\\templates\\index.html.twig",
   "PreviewInSolutionExplorer": false
 }
