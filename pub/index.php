@@ -103,7 +103,6 @@ Route::add('/admin/remove/([0-9]*)', function($id) {
     }
 });
 
-<<<<<<< HEAD
 Route::add('/upvote/([0-9]*)', function($id) {
     Vote::upVote($id, $_SESSION['user']->getId());
     header("Location: http://localhost/cms2/pub/");
@@ -113,7 +112,5 @@ Route::add('/downvote/([0-9]*)', function($id) {
     header("Location: http://localhost/cms2/pub/");
 });
 
-=======
->>>>>>> 2cf2201b444162419bfba04159eb639f0618fb91
 Route::run('/cms2/pub');
 ?>
