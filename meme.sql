@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Maj 02, 2023 at 12:26 AM
--- Wersja serwera: 10.4.28-MariaDB
--- Wersja PHP: 8.2.4
+-- Czas generowania: 10 Maj 2023, 14:48
+-- Wersja serwera: 10.4.24-MariaDB
+-- Wersja PHP: 8.0.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `meme`
+-- Baza danych: `meme`
 --
 
 -- --------------------------------------------------------
@@ -29,22 +29,26 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
-  `filename` varchar(96) NOT NULL,
   `timestamp` date NOT NULL,
+  `filename` varchar(96) NOT NULL,
   `title` text NOT NULL,
   `authorId` int(11) NOT NULL,
   `removed` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `post`
+-- Zrzut danych tabeli `post`
 --
 
-INSERT INTO `post` (`id`, `filename`, `timestamp`, `title`, `authorId`, `removed`) VALUES
-(1, '2023-04-19 15:11:55', '0000-00-00', 'Pan Zawadzki jet super gość', 1, 0),
-(2, '2023-04-19 15:13:00', '0000-00-00', 'Pan Zawadzki jet super gość', 1, 0),
-(3, '2023-04-19 15:14:34', '0000-00-00', 'Pan Zawadzki jet super gość', 1, 0),
-(4, '2023-04-24 14:03:12', '0000-00-00', 'olaf MA malego batonika', 3, 0);
+INSERT INTO `post` (`id`, `timestamp`, `filename`, `title`, `authorId`, `removed`) VALUES
+(1, '0000-00-00', '2023-04-19 15:11:55', 'Pan Zawadzki jet super gość', 1, 0),
+(2, '0000-00-00', '2023-04-19 15:13:00', 'Pan Zawadzki jet super gość', 1, 0),
+(3, '0000-00-00', '2023-04-19 15:14:34', 'Pan Zawadzki jet super gość', 1, 0),
+(4, '0000-00-00', '2023-04-24 14:03:12', 'olaf MA malego batonika', 3, 0),
+(5, '0000-00-00', '2023-05-10 13:51:05', '11', 1, 1),
+(6, '0000-00-00', '2023-05-10 14:35:49', '123', 1, 0),
+(7, '0000-00-00', '2023-05-10 14:36:19', '123', 1, 0),
+(8, '2023-05-10', 'img/7bfc0e4049b9384ce9a09c3ec5fabcf3df79f55aee86419ce53d4919460f6ae8.webp', '123', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -56,10 +60,10 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(128) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Zrzut danych tabeli `user`
 --
 
 INSERT INTO `user` (`id`, `email`, `password`) VALUES
@@ -77,41 +81,17 @@ CREATE TABLE `vote` (
   `post_id` int(11) NOT NULL,
   `score` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `vote`
+-- Zrzut danych tabeli `vote`
 --
 
 INSERT INTO `vote` (`id`, `post_id`, `score`, `user_id`) VALUES
-(4, 1, 1, 1),
-(5, 1, 1, 1),
-(6, 1, 1, 1),
-(7, 1, 1, 1),
-(8, 1, 1, 1),
-(9, 1, 1, 1),
-(10, 1, 1, 1),
-(11, 1, 1, 1),
-(12, 1, 1, 1),
-(13, 1, 1, 1),
-(14, 2, -1, 1),
-(15, 2, 1, 1),
-(16, 2, 1, 1),
-(17, 2, 1, 1),
-(18, 2, 1, 1),
-(19, 2, 1, 1),
-(20, 2, 1, 1),
-(21, 2, 1, 1),
-(32, 1, -1, 1),
-(33, 1, -1, 1),
-(34, 1, -1, 1),
-(35, 1, -1, 1),
-(36, 1, -1, 1),
-(37, 1, -1, 1),
-(38, 1, -1, 1),
-(39, 1, -1, 1),
-(40, 1, -1, 1),
-(41, 2, 1, 1);
+(1, 1, -1, 1),
+(2, 1, 1, 1),
+(3, 1, 1, 1),
+(4, 1, 1, 1);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -133,42 +113,29 @@ ALTER TABLE `user`
 -- Indeksy dla tabeli `vote`
 --
 ALTER TABLE `vote`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `vote_ibfx_1` (`post_id`),
-  ADD KEY `vote_ibfx_2` (`user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT dla zrzuconych tabel
 --
 
 --
--- AUTO_INCREMENT for table `post`
+-- AUTO_INCREMENT dla tabeli `post`
 --
 ALTER TABLE `post`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT dla tabeli `user`
+--
+ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `vote`
+-- AUTO_INCREMENT dla tabeli `vote`
 --
 ALTER TABLE `vote`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `vote`
---
-ALTER TABLE `vote`
-  ADD CONSTRAINT `vote_ibfx_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
-  ADD CONSTRAINT `vote_ibfx_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

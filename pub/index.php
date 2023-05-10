@@ -11,7 +11,7 @@ Route::add('/', function() {
     //pobierz 10 najnowszych postów
     $postArray = Post::getPage();
     $twigData = array("postArray" => $postArray,
-                        "pageTitle" => "Strona główna",
+                        "pageTitle" => "Memiarnia Nikodema",
                         );
     //jeśli użytkownik jest zalogowany to przekaż go do twiga
     if(isset($_SESSION['user']))

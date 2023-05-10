@@ -64,7 +64,7 @@ class Post {
         //przetwarzanie na tablicę asocjacyjną - bez pętli bo będzie tylko jeden
         $row = $result->fetch_assoc();
         //tworzenie obiektu
-        $p = new Post($row['id'], $row['filename'], $row['timestamp'], $row['title'], $row['userId']);
+        $p = new Post($row['id'], $row['timestamp'], $row['filename'], $row['title'], $row['userId']);
         //zwracanie obiektu
         return $p; 
     }
@@ -87,7 +87,7 @@ class Post {
         $postsArray = array();
         //pobieraj wiersz po wierszu jako tablicę asocjacyjną indeksowaną nazwami kolumn z mysql
         while($row = $result->fetch_assoc()) {
-            $post = new Post($row['id'],$row['filename'],$row['timestamp'], $row['title'], $row['authorId']);
+            $post = new Post($row['id'],$row['timestamp'],$row['filename'], $row['title'], $row['authorId']);
             array_push($postsArray, $post);
         }
         return $postsArray;

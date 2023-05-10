@@ -8,7 +8,7 @@
     {% for post in postArray %}
     <div id="post">
         <h2>{{ post.getTitle() }} </h2>
-        <img src="{{ post.getFilename() }}">
+        <img src="{{ post.getTimestamp() }}">
         {% if post.getVote() == -1 %}
         <button disabled>-</button>
         {% else %}
@@ -26,7 +26,7 @@
         </a>
         {% endif %}
         <h6>Autor: {{post.getAuthorName() }}</h6>
-        <h6>Data dodania: {{ post.getTimestamp() }} </h6>
+        <h6>Data dodania: {{ post.getFilename() }} </h6>
     </div>
     {% endfor %}
 </div>

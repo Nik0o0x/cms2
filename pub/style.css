@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: aquamarine;
 }
 div#pageContainer {
     max-width: 960px;
@@ -8,9 +9,10 @@ div#pageContainer {
 }
 h1 {
     text-align: center;
+    color: rgb(0, 132, 255);
 }
 div#post {
-    background-color: lightgray;
+    background-color: rgb(0, 238, 255);
     padding: 20px;
     margin-bottom: 20px;
 }
